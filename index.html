@@ -424,50 +424,114 @@
   .tl{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:12px 0; border-bottom:1px solid rgba(197,206,214,.22); font-size:clamp(14px, 3.8vw, 15px); }
   .t{ letter-spacing:.12em; color:var(--silver); flex:0 0 auto; }
 
-  .big-time{ font-family:var(--font-display); font-size:clamp(2rem, 9vw, 3.2rem); color:var(--olive); }
-  .countdown{ color:var(--muted); margin:12px 0 20px; font-size:clamp(12px, 3.4vw, 14px); padding:0 4px; }
-  .cal{
-    background:var(--olive); color:#fff; border-radius:4px; padding:clamp(16px, 4vw, 24px) clamp(10px, 3vw, 18px);
-    max-width:min(340px, 100%); margin:0 auto; box-shadow:0 18px 40px rgba(58,70,52,.22);
+  .suite{
+    background:
+      radial-gradient(ellipse 70% 46% at 6% 10%, rgba(138,154,120,.2), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 96% 92%, rgba(85,107,69,.1), transparent 52%),
+      var(--cream);
+    overflow:hidden;
   }
-  .cal-month{ font-family:var(--font-script); font-size:clamp(1.6rem, 7vw, 2.1rem); }
-  .cal-grid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; font-size:clamp(10px, 2.8vw, 12px); margin-top:10px; align-items:center; }
-  .cal-grid .hd{ opacity:.65; font-size:clamp(8px, 2.4vw, 10px); }
+  .suite::before, .suite::after{
+    content:''; position:absolute; pointer-events:none; z-index:0;
+    width:min(42vw, 200px); height:min(62vw, 300px);
+    background:var(--leaf) center/contain no-repeat; opacity:.55;
+  }
+  .suite::before{ top:-40px; left:-28px; transform:rotate(-24deg); }
+  .suite::after{ bottom:-50px; right:-36px; transform:rotate(155deg); }
+  .suite > *{ position:relative; z-index:1; }
+  .frame{
+    border:1.5px solid var(--olive-mid);
+    border-radius:6px;
+    padding:clamp(28px, 6vw, 44px) clamp(16px, 4.5vw, 28px);
+    background:rgba(251,250,246,.55);
+  }
+  .suite .kicker{
+    color:var(--olive-mid); letter-spacing:.32em; font-family:var(--font-serif);
+  }
+  .suite .display{ color:var(--olive); font-family:var(--font-serif); font-weight:500; }
+  .take-place{
+    font-family:var(--font-serif); color:var(--olive); letter-spacing:.08em;
+    text-transform:uppercase; font-size:clamp(13px, 3.4vw, 15px); margin-bottom:8px;
+  }
+  .date-line{
+    font-family:var(--font-serif); letter-spacing:.18em; text-transform:uppercase;
+    color:var(--olive); margin:10px 0 4px; font-size:clamp(12px, 3.2vw, 14px);
+  }
+  .year-line{ font-family:var(--font-serif); color:var(--olive); font-size:1.05rem; margin-bottom:8px; }
+  .big-time{ font-family:var(--font-serif); font-size:clamp(2.6rem, 11vw, 3.6rem); color:var(--olive); font-weight:400; margin:10px 0 4px; }
+  .cd-label{ font-family:var(--font-serif); color:var(--olive-soft); font-size:13px; margin-top:14px; }
+  .countdown{ color:var(--olive); margin:4px 0 20px; font-size:clamp(14px, 3.6vw, 16px); padding:0 4px; font-family:var(--font-serif); }
+  .cal{
+    background:var(--olive-mid); color:#fff; border-radius:18px;
+    padding:clamp(18px, 4vw, 24px) clamp(12px, 3vw, 18px) 20px;
+    max-width:min(340px, 100%); margin:0 auto;
+  }
+  .cal-month{ font-family:var(--font-script); font-size:clamp(1.8rem, 7vw, 2.2rem); color:#fff; }
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; font-size:clamp(10px, 2.8vw, 12px); margin-top:8px; align-items:center; padding-top:10px; border-top:1px solid rgba(255,255,255,.35); }
+  .cal-grid .hd{ opacity:.8; font-size:clamp(8px, 2.4vw, 10px); }
   .cal-grid span{ display:grid; place-items:center; min-height:clamp(24px, 7vw, 30px); }
   .heart-day{
     position:relative; width:clamp(24px, 7.2vw, 32px); height:clamp(24px, 7.2vw, 32px); display:grid; place-items:center;
   }
   .heart-day svg{ position:absolute; inset:0; width:100%; height:100%; fill:#fff; }
-  .heart-day b{ position:relative; z-index:1; color:var(--olive); font-size:clamp(8px, 2.4vw, 10px); font-weight:600; }
-  .add-cal{ display:inline-block; margin-top:14px; color:var(--olive-mid); text-decoration:underline; text-underline-offset:4px; }
+  .heart-day b{ position:relative; z-index:1; color:var(--olive-mid); font-size:clamp(8px, 2.4vw, 10px); font-weight:600; }
+  .add-cal{ display:inline-block; margin-top:16px; color:var(--olive-mid); text-decoration:underline; text-underline-offset:4px; font-family:var(--font-serif); }
 
-  .map-card iframe{ width:100%; height:min(42vw, 220px); min-height:180px; border:0; border-radius:12px; filter:grayscale(.15) saturate(.9); margin:14px 0; }
-  .clip-wrap{ position:relative; max-width:420px; width:100%; margin:0 auto; padding-top:16px; }
-  .clip-env{
-    position:absolute; inset:24px 0 -16px; background:var(--olive-mid);
-    transform:rotate(4deg); z-index:0; box-shadow:0 22px 44px rgba(58,70,52,.28);
+  .venue-kicker{
+    font-family:var(--font-serif); letter-spacing:.28em; text-transform:uppercase;
+    color:var(--olive); font-size:clamp(13px, 3.4vw, 15px); margin-bottom:10px;
+  }
+  .map-card iframe{ width:100%; height:min(48vw, 240px); min-height:180px; border:0; border-radius:18px; filter:saturate(.75) grayscale(.1); margin:14px 0; }
+
+  .clip-wrap{ position:relative; max-width:420px; width:100%; margin:18px auto 0; padding:28px 8px 8px; }
+  .gb-env{
+    position:absolute; inset:8px 2px -18px; transform:rotate(-7deg); z-index:0;
+    filter:drop-shadow(0 18px 28px rgba(58,70,52,.28));
+  }
+  .gb-body{
+    position:absolute; inset:42px 0 0; background:var(--olive-mid); border-radius:2px;
+  }
+  .gb-flap{
+    position:absolute; left:0; right:0; top:0; height:78px;
+    background:linear-gradient(180deg,#6d8556,#556b45);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
   }
   .guest-card{
-    position:relative; z-index:1; background:var(--paper); padding:clamp(20px, 5vw, 28px) clamp(14px, 4vw, 20px);
-    box-shadow:0 18px 40px rgba(0,0,0,.16);
+    position:relative; z-index:1; background:#fff; padding:clamp(22px, 5vw, 30px) clamp(16px, 4vw, 22px) 20px;
+    box-shadow:0 16px 32px rgba(44,51,40,.14);
+    border:1px solid rgba(58,70,52,.12);
+  }
+  .guest-card h3{
+    font-family:var(--font-serif); letter-spacing:.34em; font-size:13px; color:var(--olive-mid);
+    font-weight:400; text-transform:uppercase; margin-bottom:16px; text-align:center;
   }
   .paperclip{
-    position:absolute; top:-12px; right:max(12px, 5%); z-index:3; width:26px; height:40px;
-    border:3px solid var(--silver); border-radius:12px; border-bottom-color:transparent; transform:rotate(16deg);
+    position:absolute; top:14px; right:max(18px, 8%); z-index:3; width:22px; height:48px;
+    border:3.5px solid #c4a574; border-radius:14px 14px 12px 12px;
+    border-bottom-color:transparent; transform:rotate(22deg);
+    box-shadow:inset 1px 1px 0 rgba(255,255,255,.5);
   }
   .field{ margin-bottom:12px; text-align:left; }
   .field input, .field textarea, .field select{
-    width:100%; padding:12px 13px; border:1px solid rgba(58,70,52,.22); background:#fff; color:var(--ink);
-    font:inherit; font-size:16px; min-height:46px; border-radius:0; max-width:100%;
+    width:100%; padding:12px 14px; border:1px solid #d5d8d0; background:#f7f6f1; color:var(--ink);
+    font:inherit; font-size:16px; min-height:46px; border-radius:10px; max-width:100%;
   }
-  .field textarea{ min-height:96px; }
+  .field textarea{ min-height:110px; resize:vertical; }
   .pill{
-    display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 22px; margin-top:18px;
-    background:var(--olive); color:var(--silver-hi); letter-spacing:.14em; text-transform:uppercase; font-size:11px; border-radius:999px;
-    max-width:100%;
+    display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 26px; margin-top:16px;
+    background:var(--olive-mid); color:#fff; letter-spacing:.16em; text-transform:uppercase;
+    font-size:12px; border-radius:999px; max-width:100%; font-family:var(--font-serif);
   }
-  .note{ display:none; margin-top:12px; color:var(--olive-mid); }
+  .note{ display:none; margin-top:12px; color:var(--olive-mid); font-family:var(--font-serif); }
   .note.show{ display:block; } .note.error{ color:#8a4a3a; }
+  .wishes{ max-width:420px; margin:22px auto 0; text-align:left; }
+  .wish{
+    background:#fff; border:1px solid #e4e6df; border-radius:12px;
+    padding:14px 16px; margin-bottom:10px; font-family:var(--font-serif); color:var(--olive);
+  }
+  .wish header{ display:flex; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .wish strong{ color:var(--olive); }
+  .wish time{ font-size:11px; color:#9aa193; white-space:nowrap; }
 
   footer{
     text-align:center; padding:72px max(16px, var(--safe-right)) calc(var(--safe-bottom) + 40px) max(16px, var(--safe-left));
@@ -509,7 +573,7 @@
     .photo-swiper .swiper-slide{ width:min(62vw, 220px); }
     .motif-t{ font-size:1.35rem; }
     .motif-xxv{ font-size:2.1rem; }
-    .paper::before, .paper::after{ width:120px; height:180px; opacity:.45; }
+    .paper::before, .paper::after, .suite::before{ width:120px; height:180px; opacity:.45; }
     .hero{ min-height:100svh; }
     .hero-content{ margin-bottom:calc(var(--safe-bottom) + 108px); }
     .surname{ letter-spacing:.2em; }
@@ -520,7 +584,6 @@
     .save-kicker, .hint{ letter-spacing:.16em; }
     .swatch{ width:42px; height:42px; border-width:3px; }
     .guest-card{ padding:18px 12px; }
-    .clip-env{ transform:rotate(2deg); }
   }
   @media (max-height:560px) and (orientation:portrait){
     .flourish{ display:none; }
@@ -690,46 +753,53 @@
   </div>
 </section>
 
-<section class="section paper" id="when">
+<section class="section suite" id="when">
   <div class="inner reveal">
-    <p class="kicker" data-en="The morning" data-sn="Mangwanani">The morning</p>
-    <p class="lede" data-en="The celebration will take place at Ebenezer Gardens." data-sn="Mufaro uchaitirwa pa Ebenezer Gardens.">The celebration will take place at Ebenezer Gardens.</p>
-    <p class="big-time">10:00 AM</p>
-    <p class="kicker" style="margin-top:8px">Tuesday | 22 | December 2026</p>
-    <p class="countdown" id="countdown">Countdown</p>
-    <div class="cal">
-      <p class="cal-month">December 2026</p>
-      <div class="cal-grid" id="calGrid"></div>
+    <div class="frame">
+      <p class="kicker" data-en="The morning" data-sn="Mangwanani">The morning</p>
+      <p class="take-place" data-en="The celebration will take place at" data-sn="Mufaro uchaitirwa pa">The celebration will take place at</p>
+      <h2 class="display">Ebenezer Gardens</h2>
+      <p class="big-time">10:00 AM</p>
+      <p class="date-line">Tuesday | 22 | December</p>
+      <p class="year-line">2026</p>
+      <p class="cd-label">Countdown</p>
+      <p class="countdown" id="countdown">Countdown</p>
+      <div class="cal">
+        <p class="cal-month">December 2026</p>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <a class="add-cal" href="data:text/calendar;charset=utf-8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ASUMMARY:Norman%20and%20Charity%20Muchapondwa%20Silver%20Anniversary%0ADTSTART:20261222T080000Z%0ADTEND:20261222T140000Z%0ALOCATION:Ebenezer%20Palm%20Tree%20Gardens%2C%205VQW%2B692%2C%20Somerby%2C%20Harare%0AEND:VEVENT%0AEND:VCALENDAR" download="muchapondwa-silver-anniversary.ics">Add to Calendar</a>
+      <br>
+      <a class="pill" href="#rsvp" data-en="Confirm attendance" data-sn="Simbisa kuvapo">Confirm attendance</a>
     </div>
-    <a class="add-cal" href="data:text/calendar;charset=utf-8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ASUMMARY:Norman%20and%20Charity%20Muchapondwa%20Silver%20Anniversary%0ADTSTART:20261222T080000Z%0ADTEND:20261222T140000Z%0ALOCATION:Ebenezer%20Palm%20Tree%20Gardens%2C%20Harare%0AEND:VEVENT%0AEND:VCALENDAR" download="muchapondwa-silver-anniversary.ics">Add to Calendar</a>
-    <br><a class="pill" href="#rsvp" data-en="Confirm attendance" data-sn="Simbisa kuvapo">Confirm attendance</a>
   </div>
 </section>
 
-<section class="section paper" id="details">
+<section class="section suite" id="details">
   <div class="inner reveal">
-    <p class="kicker" data-en="Venue" data-sn="Nzvimbo">Venue</p>
+    <p class="venue-kicker" data-en="Anniversary venue" data-sn="Nzvimbo">Anniversary venue</p>
     <h2 class="display">Ebenezer Gardens</h2>
-    <p class="lede">Ebenezer Palm Tree Gardens · Somerby / Snake Park, Harare</p>
+    <p class="lede">Ebenezer Palm Tree Gardens<br>5VQW+692, Somerby, Harare</p>
     <div class="map-card">
       <iframe title="Ebenezer Gardens" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        src="https://maps.google.com/maps?q=Ebenezer%20Palm%20Tree%20Gardens%20Somerby%20Harare&z=15&output=embed"></iframe>
+        src="https://maps.google.com/maps?q=5VQW%2B692%2C%20Somerby&z=16&output=embed"></iframe>
     </div>
-    <a class="pill" href="https://www.google.com/maps/place/?q=place_id:ChIJi8eRVf-nMRkRBWeyA6JfLKI" target="_blank" rel="noopener">Open location</a>
+    <a class="pill" href="https://www.google.com/maps/search/?api=1&query=5VQW%2B692%2C%20Somerby" target="_blank" rel="noopener">Open in Google Maps</a>
   </div>
 </section>
 
-<section class="section paper" id="rsvp">
+<section class="section suite" id="rsvp">
   <div class="inner reveal">
     <p class="kicker">RSVP</p>
     <h2 class="display" data-en="Be our guest" data-sn="Iva muenzi wedu">Be our guest</h2>
     <div class="clip-wrap">
-      <span class="clip-env" aria-hidden="true"></span>
+      <span class="gb-env" aria-hidden="true"><span class="gb-flap"></span><span class="gb-body"></span></span>
       <span class="paperclip" aria-hidden="true"></span>
       <form class="guest-card" id="rsvpForm" action="https://formspree.io/f/xjybvnnk" method="POST">
+        <h3>Guestbook</h3>
         <input type="hidden" name="form_type" value="RSVP">
         <input type="hidden" name="_subject" value="Silver Anniversary RSVP — Norman and Charity Muchapondwa">
-        <div class="field"><input name="name" required autocomplete="name" placeholder="Your name*" data-ph-en="Your name*" data-ph-sn="Zita renyu*"></div>
+        <div class="field"><input name="name" required autocomplete="name" placeholder="Enter your name*" data-ph-en="Enter your name*" data-ph-sn="Nyora zita renyu*"></div>
         <div class="field"><input name="email" type="email" required autocomplete="email" placeholder="Email*"></div>
         <div class="field">
           <select name="attend" required>
@@ -737,11 +807,12 @@
             <option value="Regrettably decline">Regrettably decline</option>
           </select>
         </div>
-        <div class="field"><textarea name="message" rows="4" placeholder="Your wishes" data-ph-en="Your wishes" data-ph-sn="Mufaro wenyu"></textarea></div>
-        <button class="pill" type="submit" style="width:100%">Send RSVP</button>
-        <p class="note" id="formNote" data-en="Thank you — we've received your RSVP." data-sn="Tatenda — RSVP yagamuchirwa.">Thank you — we've received your RSVP.</p>
+        <div class="field"><textarea name="message" rows="4" placeholder="Enter your wishes*" data-ph-en="Enter your wishes*" data-ph-sn="Nyora mufaro wenyu*"></textarea></div>
+        <button class="pill" type="submit" style="width:100%">Send wishes</button>
+        <p class="note" id="formNote" data-en="Thank you — your message was sent." data-sn="Tatenda — shoko ratumirwa.">Thank you — your message was sent.</p>
       </form>
     </div>
+    <div class="wishes" id="wishes"></div>
   </div>
 </section>
 
@@ -769,6 +840,7 @@
   const langLabel = document.getElementById('langLabel');
   const form = document.getElementById('rsvpForm');
   const formNote = document.getElementById('formNote');
+  const wishes = document.getElementById('wishes');
   const motes = document.getElementById('motes');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let lang = 'en', audioOn = false, opened = false;
@@ -860,7 +932,7 @@
     const diff = target - new Date();
     if(diff<=0){ cd.textContent = lang==='sn' ? 'Zuva rasvika' : 'The day is here'; return; }
     const d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-    cd.textContent = 'Countdown / '+d+' days '+h+' hours '+m+' min '+s+' sec';
+    cd.textContent = d+' days '+h+' hours '+m+' min '+s+' sec';
   }
   tick(); setInterval(tick,1000);
 
@@ -877,11 +949,23 @@
   async function submitForm(formEl, noteEl){
     const btn = formEl.querySelector('button[type=submit]');
     const successMsg = noteEl.getAttribute('data-'+lang) || 'Thank you — sent.';
+    const data = new FormData(formEl);
+    const name = (data.get('name') || '').toString().trim();
+    const msg = (data.get('message') || '').toString().trim();
     noteEl.classList.remove('show','error'); if(btn) btn.disabled = true;
     try{
-      const res = await fetch(formEl.action, { method:'POST', body:new FormData(formEl), headers:{Accept:'application/json'}, mode:'cors' });
+      const res = await fetch(formEl.action, { method:'POST', body:data, headers:{Accept:'application/json'}, mode:'cors' });
       if(!res.ok) throw new Error('fail');
       formEl.reset(); noteEl.textContent = successMsg; noteEl.classList.add('show');
+      if(wishes && name){
+        const card = document.createElement('article');
+        card.className = 'wish';
+        card.innerHTML = '<header><strong></strong><time></time></header><p></p>';
+        card.querySelector('strong').textContent = name;
+        card.querySelector('time').textContent = new Date().toLocaleString();
+        card.querySelector('p').textContent = msg || (lang==='sn' ? 'Ndinogamuchira' : 'Joyfully accept');
+        wishes.prepend(card);
+      }
     }catch(_){
       try{
         let iframe = document.getElementById('formspree-sink');
