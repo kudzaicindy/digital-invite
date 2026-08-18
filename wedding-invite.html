@@ -154,9 +154,10 @@
 
   .envelope{
     display:block; position:relative; width:100%; height:100%;
-    transform-style:preserve-3d; border-radius:3px;
+    transform-style:preserve-3d; border-radius:3px; overflow:hidden;
     filter:drop-shadow(0 8px 10px rgba(0,0,0,.28)) drop-shadow(0 28px 40px rgba(8,12,6,.55));
   }
+  .invite-card.is-opening .envelope{ overflow:visible; }
   .invite-card.is-ready:not(.is-opening) .envelope{ animation:envFloat 4.8s ease-in-out infinite; }
   @keyframes envFloat{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-7px) } }
   .env-glow{
@@ -185,7 +186,7 @@
     color:var(--olive);
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
     box-shadow:0 14px 28px rgba(0,0,0,.22);
-    transform:translateY(20%);
+    transform:translateY(6%);
     transition:transform 1s cubic-bezier(.22,.7,.2,1);
     border:1px solid rgba(197,206,214,.45);
   }
@@ -483,21 +484,23 @@
   }
   .map-card iframe{ width:100%; height:min(48vw, 240px); min-height:180px; border:0; border-radius:18px; filter:saturate(.75) grayscale(.1); margin:14px 0; }
 
-  .clip-wrap{ position:relative; max-width:420px; width:100%; margin:18px auto 0; padding:28px 8px 8px; }
+  .clip-wrap{ position:relative; max-width:420px; width:100%; margin:18px auto 0; padding:36px 20px 28px; }
   .gb-env{
-    position:absolute; inset:8px 2px -18px; transform:rotate(-7deg); z-index:0;
+    position:absolute; inset:12px 4px 4px; transform:rotate(-6deg); z-index:0;
     filter:drop-shadow(0 18px 28px rgba(58,70,52,.28));
   }
   .gb-body{
-    position:absolute; inset:42px 0 0; background:var(--olive-mid); border-radius:2px;
+    position:absolute; inset:0; background:var(--olive-mid); border-radius:2px;
   }
   .gb-flap{
-    position:absolute; left:0; right:0; top:0; height:78px;
+    position:absolute; left:0; right:0; top:0; height:72px; z-index:1;
     background:linear-gradient(180deg,#6d8556,#556b45);
     clip-path:polygon(0 0, 100% 0, 50% 100%);
   }
   .guest-card{
-    position:relative; z-index:1; background:#fff; padding:clamp(22px, 5vw, 30px) clamp(16px, 4vw, 22px) 20px;
+    position:relative; z-index:1; background:#fff;
+    margin:8px 10px 0;
+    padding:clamp(22px, 5vw, 30px) clamp(16px, 4vw, 22px) 20px;
     box-shadow:0 16px 32px rgba(44,51,40,.14);
     border:1px solid rgba(58,70,52,.12);
   }
@@ -506,7 +509,7 @@
     font-weight:400; text-transform:uppercase; margin-bottom:16px; text-align:center;
   }
   .paperclip{
-    position:absolute; top:14px; right:max(18px, 8%); z-index:3; width:22px; height:48px;
+    position:absolute; top:22px; right:max(28px, 10%); z-index:3; width:22px; height:48px;
     border:3.5px solid #c4a574; border-radius:14px 14px 12px 12px;
     border-bottom-color:transparent; transform:rotate(22deg);
     box-shadow:inset 1px 1px 0 rgba(255,255,255,.5);
