@@ -801,7 +801,10 @@
         <p class="cal-month">December 2026</p>
         <div class="cal-grid" id="calGrid"></div>
       </div>
-      <a class="add-cal" href="data:text/calendar;charset=utf-8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ASUMMARY:Norman%20and%20Charity%20Muchapondwa%20Silver%20Anniversary%0ADTSTART:20261222T080000Z%0ADTEND:20261222T140000Z%0ALOCATION:Ebenezer%20Palm%20Tree%20Gardens%2C%205VQW%2B692%2C%20Somerby%2C%20Harare%0AEND:VEVENT%0AEND:VCALENDAR" download="muchapondwa-silver-anniversary.ics">Add to Calendar</a>
+      <a class="add-cal" id="addCal"
+        href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Norman%20and%20Charity%20Muchapondwa%20Silver%20Anniversary&amp;dates=20261222T080000Z%2F20261222T140000Z&amp;location=Ebenezer%20Palm%20Tree%20Gardens%2C%205VQW%2B692%2C%20Somerby%2C%20Harare&amp;details=Silver%20anniversary%20celebration%20%C2%B7%2010%3A00%20AM"
+        target="_blank" rel="noopener"
+        data-en="Add to Calendar" data-sn="Wedzera ku Calendar">Add to Calendar</a>
       <br>
       <a class="pill" href="#rsvp" data-en="Confirm attendance" data-sn="Simbisa kuvapo">Confirm attendance</a>
     </div>
@@ -1001,6 +1004,48 @@
     cd.textContent = d+' days '+h+' hours '+m+' min '+s+' sec';
   }
   tick(); setInterval(tick,1000);
+
+  (function(){
+    const btn = document.getElementById('addCal');
+    if(!btn) return;
+    const title = 'Norman and Charity Muchapondwa Silver Anniversary';
+    const locationStr = 'Ebenezer Palm Tree Gardens, 5VQW+692, Somerby, Harare';
+    const details = 'Silver anniversary celebration · 10:00 AM';
+    const start = '20261222T080000Z';
+    const end = '20261222T140000Z';
+    function buildIcs(){
+      const stamp = new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+      return [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Muchapondwa//Silver Anniversary//EN',
+        'CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
+        'UID:nc-silver-20261222@digital-invite','DTSTAMP:'+stamp,
+        'DTSTART:'+start,'DTEND:'+end,
+        'SUMMARY:'+title,'LOCATION:'+locationStr,'DESCRIPTION:'+details,
+        'END:VEVENT','END:VCALENDAR'
+      ].join('\r\n');
+    }
+    function isIOS(){
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+    btn.addEventListener('click', function(e){
+      if(isIOS()) return;
+      e.preventDefault();
+      try{
+        const blob = new Blob([buildIcs()], { type:'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'muchapondwa-silver-anniversary.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 2500);
+      }catch(_){
+        window.open(btn.href, '_blank', 'noopener');
+      }
+    });
+  })();
 
   const grid = document.getElementById('calGrid');
   ['Mo','Tu','We','Th','Fr','Sa','Su'].forEach(d => { const s=document.createElement('span'); s.className='hd'; s.textContent=d; grid.appendChild(s); });
