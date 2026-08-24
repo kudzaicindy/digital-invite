@@ -811,10 +811,8 @@
     <div class="clip-wrap">
       <span class="gb-env" aria-hidden="true"><span class="gb-flap"></span><span class="gb-body"></span></span>
       <span class="paperclip" aria-hidden="true"></span>
-      <form class="guest-card" id="rsvpForm" action="https://formspree.io/f/xjybvnnk" method="POST">
+      <form class="guest-card" id="rsvpForm" method="POST">
         <h3>Guestbook</h3>
-        <input type="hidden" name="form_type" value="RSVP">
-        <input type="hidden" name="_subject" value="Silver Anniversary RSVP — Norman and Charity Muchapondwa">
         <div class="field"><input name="name" required autocomplete="name" placeholder="Enter your name*" data-ph-en="Enter your name*" data-ph-sn="Nyora zita renyu*"></div>
         <div class="field"><input name="email" type="email" required autocomplete="email" placeholder="Email*"></div>
         <div class="field">
@@ -854,6 +852,9 @@
   const audioIconOff = document.getElementById('audioIconOff');
   const langBtn = document.getElementById('langBtn');
   const langLabel = document.getElementById('langLabel');
+  // Paste your deployed Apps Script /exec URL here for local file:// testing.
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWudEbZubv_HwvdEyWvmUioKruDJdhmsLziJd4etZET2nEVHkdZEXGQFgL0NvD7BRP/exec';
+  const isHostedWeb = location.protocol === 'http:' || location.protocol === 'https:';
   const form = document.getElementById('rsvpForm');
   const formNote = document.getElementById('formNote');
   const wishes = document.getElementById('wishes');
@@ -919,7 +920,7 @@
     const indexEl = document.getElementById('cfIndex');
     document.getElementById('cfTotal').textContent = String(total);
     const swiper = new Swiper(el, {
-      effect:'coverflow', grabCursor:true, centeredSlides:true, slidesPerView:'auto', loop:true, speed:650,
+      effect:'coverflow', grabCursor:true, centeredSlides:true, slidesPerView:'auto', loop: total >= 6, speed:650,
       coverflowEffect:{ rotate:36, stretch:-8, depth:160, modifier:1, slideShadows:true },
       breakpoints:{
         720:{ coverflowEffect:{ rotate:46, stretch:-16, depth:210, modifier:1.1, slideShadows:true } }
@@ -962,35 +963,84 @@
     grid.appendChild(s);
   }
 
+  function showRsvpSuccess(formEl, noteEl, name, msg){
+    const successMsg = noteEl.getAttribute('data-'+lang) || 'Thank you — sent.';
+    formEl.reset();
+    noteEl.textContent = successMsg;
+    noteEl.classList.add('show');
+    if(wishes && name){
+      const card = document.createElement('article');
+      card.className = 'wish';
+      card.innerHTML = '<header><strong></strong><time></time></header><p></p>';
+      card.querySelector('strong').textContent = name;
+      card.querySelector('time').textContent = new Date().toLocaleString();
+      card.querySelector('p').textContent = msg || (lang==='sn' ? 'Ndinogamuchira' : 'Joyfully accept');
+      wishes.prepend(card);
+    }
+  }
+
+  async function submitToGoogleScript(scriptUrl, payload){
+    const body = new FormData();
+    Object.entries(payload).forEach(([key, value]) => {
+      if(value != null && String(value).trim() !== '') body.append(key, String(value).trim());
+    });
+    try{
+      const res = await fetch(scriptUrl, { method:'POST', body });
+      if(res.ok) return true;
+    }catch(_){}
+    await fetch(scriptUrl, { method:'POST', body, mode:'no-cors' });
+    return true;
+  }
+
   async function submitForm(formEl, noteEl){
     const btn = formEl.querySelector('button[type=submit]');
-    const successMsg = noteEl.getAttribute('data-'+lang) || 'Thank you — sent.';
+    const setupMsg = lang==='sn'
+      ? 'RSVP haisati yaiswa. Isa Google Apps Script URL, kana edza pa digital-invite-tau.vercel.app.'
+      : 'RSVP is not connected yet. Add your Google Apps Script URL, or test on digital-invite-tau.vercel.app.';
+    const localMsg = lang==='sn'
+      ? 'Kuverenga mufile hakubviri. Shandisa digital-invite-tau.vercel.app kana isa GOOGLE_SCRIPT_URL.'
+      : 'Opening the file directly will not send RSVPs. Use digital-invite-tau.vercel.app or paste GOOGLE_SCRIPT_URL in index.html.';
+    const failMsg = lang==='sn' ? 'Hatina kukwanisa kutumira izvozvi.' : 'Could not send just now.';
     const data = new FormData(formEl);
     const name = (data.get('name') || '').toString().trim();
     const msg = (data.get('message') || '').toString().trim();
-    noteEl.classList.remove('show','error'); if(btn) btn.disabled = true;
+    const payload = {
+      name: data.get('name'),
+      email: data.get('email'),
+      attend: data.get('attend'),
+      message: data.get('message'),
+    };
+    noteEl.classList.remove('show','error');
+    if(btn) btn.disabled = true;
+
     try{
-      const res = await fetch(formEl.action, { method:'POST', body:data, headers:{Accept:'application/json'}, mode:'cors' });
-      if(!res.ok) throw new Error('fail');
-      formEl.reset(); noteEl.textContent = successMsg; noteEl.classList.add('show');
-      if(wishes && name){
-        const card = document.createElement('article');
-        card.className = 'wish';
-        card.innerHTML = '<header><strong></strong><time></time></header><p></p>';
-        card.querySelector('strong').textContent = name;
-        card.querySelector('time').textContent = new Date().toLocaleString();
-        card.querySelector('p').textContent = msg || (lang==='sn' ? 'Ndinogamuchira' : 'Joyfully accept');
-        wishes.prepend(card);
-      }
-    }catch(_){
-      try{
-        let iframe = document.getElementById('formspree-sink');
-        if(!iframe){ iframe=document.createElement('iframe'); iframe.name=iframe.id='formspree-sink'; iframe.style.cssText='position:absolute;width:0;height:0;border:0;opacity:0'; document.body.appendChild(iframe); }
-        formEl.target='formspree-sink'; formEl.submit();
-        setTimeout(()=>{ formEl.reset(); formEl.removeAttribute('target'); noteEl.textContent=successMsg; noteEl.classList.add('show'); if(btn) btn.disabled=false; },900);
+      if(isHostedWeb){
+        const res = await fetch('/api/rsvp', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json().catch(() => ({}));
+        if(res.status === 503) throw new Error('RSVP not configured');
+        if(!res.ok) throw new Error(result.error || 'fail');
+        showRsvpSuccess(formEl, noteEl, name, msg);
         return;
-      }catch(__){ noteEl.textContent='Could not send just now.'; noteEl.classList.add('show','error'); }
-    }finally{ if(btn && !formEl.target) btn.disabled=false; }
+      }
+
+      if(!GOOGLE_SCRIPT_URL){
+        noteEl.textContent = localMsg;
+        noteEl.classList.add('show','error');
+        return;
+      }
+
+      await submitToGoogleScript(GOOGLE_SCRIPT_URL, payload);
+      showRsvpSuccess(formEl, noteEl, name, msg);
+    }catch(err){
+      noteEl.textContent = err.message === 'RSVP not configured' ? setupMsg : failMsg;
+      noteEl.classList.add('show','error');
+    }finally{
+      if(btn) btn.disabled = false;
+    }
   }
   form.addEventListener('submit', e => { e.preventDefault(); submitForm(form, formNote); });
 
