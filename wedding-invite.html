@@ -119,6 +119,14 @@
       max(14px, var(--safe-left));
     text-align:center;
   }
+  .guest-hello{
+    display:none; margin:0 0 2px; max-width:min(92vw, 420px);
+    font-family:var(--font-serif); font-size:clamp(1.05rem, 4.2vw, 1.35rem);
+    color:var(--silver-hi); letter-spacing:.04em; line-height:1.35;
+    text-shadow:0 2px 18px rgba(0,0,0,.55);
+  }
+  .guest-hello.is-on{ display:block; }
+  .guest-hello .dear{ display:block; font-family:var(--font-script); font-size:1.35em; letter-spacing:.02em; }
   .save-kicker{
     font-size:clamp(10px, 2.6vw, 13px); letter-spacing:0.32em; text-transform:uppercase;
     color:var(--silver); margin:0; text-shadow:0 2px 16px rgba(0,0,0,.5);
@@ -310,7 +318,7 @@
   }
   .hint.show{ opacity:1; animation:hintGlow 2.2s ease-in-out infinite; }
   @keyframes hintGlow{ 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
-  .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .hint{
+  .gate.is-open .guest-hello, .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .hint{
     opacity:0; transition:opacity .6s ease;
   }
 
@@ -362,6 +370,13 @@
   .hero-content::before{ top:-18px; left:-14px; transform:rotate(-30deg); }
   .hero-content::after{ bottom:-22px; right:-18px; transform:rotate(150deg); }
   .hero .kicker{ color:var(--olive-mid); }
+  .hero-guest{
+    display:none; margin:0 0 10px;
+    font-family:var(--font-serif); font-size:clamp(1.05rem, 4vw, 1.25rem);
+    color:var(--olive); letter-spacing:.03em;
+  }
+  .hero-guest.is-on{ display:block; }
+  .hero-guest .dear{ display:block; font-family:var(--font-script); font-size:1.4em; color:var(--olive-deep); }
   .xxv{
     font-family:var(--font-display); font-size:clamp(2.4rem, 10vw, 4.2rem); letter-spacing:.2em; font-weight:600;
     background:linear-gradient(180deg,#ffffff,#e8eef2 32%,#c5ced6 62%,#7d8890);
@@ -642,6 +657,7 @@
   <div class="motes" id="motes"></div>
   <div class="gate-leaves" aria-hidden="true"><span class="l1"></span><span class="l2"></span><span class="l3"></span><span class="l4"></span></div>
   <div class="invite-stage">
+    <p class="guest-hello" id="guestHello" aria-live="polite"></p>
     <p class="save-kicker" data-en="Save the date" data-sn="Chengetedza zuva">Save the date</p>
     <div class="flourish" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4c-4 5-7 8-10 9 3 1 6 4 10 9 4-5 7-8 10-9-3-1-6-4-10-9z"/></svg></div>
     <button class="invite-card" id="seal" type="button" aria-label="Open the invitation">
@@ -701,6 +717,7 @@
   </video>
   <div class="hero-veil"></div>
   <div class="hero-content">
+    <p class="hero-guest" id="heroGuest" aria-live="polite"></p>
     <p class="kicker" data-en="Silver anniversary" data-sn="Anniversary yesirivha">Silver anniversary</p>
     <p class="xxv">XXV</p>
     <h1 class="hero-names">Norman<span class="hero-and">and</span>Charity</h1>
@@ -862,6 +879,37 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let lang = 'en', audioOn = false, opened = false;
 
+  function guestNameFromUrl(){
+    const q = new URLSearchParams(location.search);
+    const raw = q.get('to') || q.get('guest') || q.get('name') || '';
+    const cleaned = raw.trim().replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').slice(0, 40);
+    if(!cleaned) return '';
+    return cleaned.replace(/\b\w/g, c => c.toUpperCase());
+  }
+  const guestName = guestNameFromUrl();
+  function setGuestGreeting(){
+    const gateEl = document.getElementById('guestHello');
+    const heroEl = document.getElementById('heroGuest');
+    if(!guestName){
+      if(gateEl){ gateEl.classList.remove('is-on'); gateEl.textContent = ''; }
+      if(heroEl){ heroEl.classList.remove('is-on'); heroEl.textContent = ''; }
+      return;
+    }
+    const dear = lang === 'sn' ? 'Mhoroi ' + guestName : 'Dear ' + guestName;
+    const line = lang === 'sn' ? 'Muri kukokwa' : 'You are invited';
+    const html = '<span class="dear"></span><span class="line"></span>';
+    [gateEl, heroEl].forEach(el => {
+      if(!el) return;
+      el.innerHTML = html;
+      el.querySelector('.dear').textContent = dear;
+      el.querySelector('.line').textContent = line;
+      el.classList.add('is-on');
+    });
+    const nameInput = form && form.querySelector('input[name="name"]');
+    if(nameInput && !nameInput.value) nameInput.value = guestName;
+  }
+  setGuestGreeting();
+
   if(reduceMotion){ seal.classList.add('is-ready'); document.getElementById('openAsk').classList.add('show'); }
   else setTimeout(() => { seal.classList.add('is-ready'); document.getElementById('openAsk').classList.add('show'); }, 2800);
 
@@ -940,6 +988,7 @@
       const val = el.getAttribute(lang==='sn' ? 'data-ph-sn' : 'data-ph-en');
       if(val != null) el.setAttribute('placeholder', val);
     });
+    setGuestGreeting();
   }
   langBtn.addEventListener('click', () => { lang = lang==='en' ? 'sn' : 'en'; applyLang(); });
 
