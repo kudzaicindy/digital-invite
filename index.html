@@ -400,14 +400,25 @@
     background:linear-gradient(165deg,#8fa07a,#5c7348 58%,#3f4c34); color:var(--silver-hi);
   }
   .couple-art{
-    min-height:320px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-    background:
-      radial-gradient(ellipse at 50% 40%, rgba(197,208,184,.35), transparent 58%),
-      linear-gradient(180deg,#d4deca,#a3b394 55%,#7d9170);
+    position:relative; min-height:min(62vh, 560px); overflow:hidden;
+    background:#3f4c34;
   }
-  .couple-art .xxv{ font-size:clamp(3rem, 9vw, 5rem); }
-  .couple-art .art-script{ font-family:var(--font-script); font-size:2rem; color:var(--olive-deep); }
-  .couple-art .art-leaf{ width:42px; height:70px; background:var(--leaf) center/contain no-repeat; }
+  .couple-art img{
+    width:100%; height:100%; object-fit:cover; object-position:center 18%;
+    display:block; min-height:min(62vh, 560px);
+  }
+  .couple-art .art-veil{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(180deg, rgba(63,76,52,.12), transparent 35%, rgba(63,76,52,.55)),
+      radial-gradient(ellipse at 50% 80%, transparent 40%, rgba(44,51,40,.35));
+  }
+  .couple-art .art-badge{
+    position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
+    z-index:2; text-align:center; pointer-events:none;
+  }
+  .couple-art .xxv{ font-size:clamp(1.6rem, 5vw, 2.2rem); margin:0; }
+  .couple-art .art-script{ font-family:var(--font-script); font-size:1.35rem; color:var(--silver-hi); margin:0; text-shadow:0 2px 10px rgba(0,0,0,.45); }
   .couple-copy{ display:flex; flex-direction:column; justify-content:center; padding:clamp(36px,6vw,64px); }
   .couple-copy .kicker, .couple-copy .display{ color:var(--silver-hi); text-align:left; }
   .couple-copy p{ font-family:var(--font-serif); font-size:1.2rem; color:rgba(238,242,244,.88); max-width:28rem; }
@@ -418,12 +429,20 @@
   .coverflow-wrap{ position:relative; max-width:980px; margin:28px auto 0; padding:0 44px; }
   .photo-swiper{ padding:16px 0; overflow:visible; }
   .photo-swiper .swiper-slide{
-    width:min(58vw, 280px); aspect-ratio:3/4; border-radius:14px; overflow:hidden;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-    background:linear-gradient(180deg,#c5d0b8,#8fa07a 55%,#5c7348); color:var(--olive-deep); text-align:center; padding:20px 16px;
+    width:min(62vw, 300px); aspect-ratio:3/4; border-radius:14px; overflow:hidden;
+    position:relative; padding:0; background:#2c3328;
   }
-  .photo-swiper .swiper-slide.cream-card{ background:var(--paper); color:var(--olive-deep); }
-  .photo-swiper .swiper-slide.silver-card{ background:linear-gradient(180deg,#e8eee4,#c5d0b8); color:var(--olive); }
+  .photo-swiper .swiper-slide img{
+    width:100%; height:100%; object-fit:cover; object-position:center 14%;
+    display:block; -webkit-backface-visibility:hidden; backface-visibility:hidden;
+    transform:translateZ(0.1px); -webkit-transform:translateZ(0.1px);
+  }
+  .photo-swiper .swiper-slide .photo-cap{
+    position:absolute; left:0; right:0; bottom:0; z-index:1; padding:28px 14px 14px;
+    background:linear-gradient(180deg, transparent, rgba(44,51,40,.78));
+    color:var(--silver-hi); text-align:center;
+    font-family:var(--font-serif); font-size:1.05rem; letter-spacing:.04em;
+  }
   .motif-k{ letter-spacing:.28em; text-transform:uppercase; font-size:11px; opacity:.8; }
   .motif-t{ font-family:var(--font-serif); font-size:1.7rem; line-height:1.2; }
   .motif-xxv{
@@ -586,7 +605,8 @@
   }
   @media (max-width:900px){
     .couple{ grid-template-columns:1fr; }
-    .couple-art{ min-height:240px; padding:48px 16px; }
+    .couple-art{ min-height:min(52vh, 420px); }
+    .couple-art img{ min-height:min(52vh, 420px); }
     .couple-copy{ text-align:center; padding:clamp(32px, 7vw, 48px) 20px; }
     .couple-copy .kicker, .couple-copy .display, .couple-copy p{ text-align:center; margin-left:auto; margin-right:auto; }
     .hero-content::before, .hero-content::after{ width:64px; height:96px; }
@@ -601,9 +621,7 @@
     .coverflow-wrap{ padding:0 8px; }
     .cf-nav{ width:36px; height:36px; }
     .cf-nav.prev{ left:2px; } .cf-nav.next{ right:2px; }
-    .photo-swiper .swiper-slide{ width:min(62vw, 220px); }
-    .motif-t{ font-size:1.35rem; }
-    .motif-xxv{ font-size:2.1rem; }
+    .photo-swiper .swiper-slide{ width:min(68vw, 260px); }
     .paper::before, .paper::after, .suite::before{ width:120px; height:180px; opacity:.45; }
     .hero{ min-height:100svh; }
     .hero-content{ margin-bottom:calc(var(--safe-bottom) + 108px); }
@@ -730,10 +748,13 @@
 </section>
 
 <section class="couple" id="couple">
-  <div class="couple-art" aria-hidden="true">
-    <span class="art-leaf"></span>
-    <p class="xxv">XXV</p>
-    <p class="art-script">twenty-five</p>
+  <div class="couple-art">
+    <img src="photos/nc-embrace.jpg" alt="Norman and Charity Muchapondwa" width="900" height="1200" loading="eager" decoding="async">
+    <span class="art-veil" aria-hidden="true"></span>
+    <div class="art-badge" aria-hidden="true">
+      <p class="xxv">XXV</p>
+      <p class="art-script">twenty-five</p>
+    </div>
   </div>
   <div class="couple-copy reveal">
     <p class="kicker" data-en="Twenty-five years" data-sn="Makore makumi maviri nemashanu">Twenty-five years</p>
@@ -745,21 +766,23 @@
 <section class="section gallery" id="gallery">
   <div class="inner reveal">
     <p class="kicker" data-en="Keepsakes" data-sn="Zviyeuchidzo">Keepsakes</p>
-    <h2 class="display" data-en="Silver details" data-sn="Zvinhu zvesirivha">Silver details</h2>
+    <h2 class="display" data-en="Norman and Charity" data-sn="Norman na Charity">Norman and Charity</h2>
   </div>
   <div class="coverflow-wrap">
     <button class="cf-nav prev" id="cfPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
     <div class="swiper photo-swiper" id="photoSwiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide"><p class="motif-k">Anniversary</p><p class="motif-xxv">XXV</p><p class="motif-t">Silver years</p></div>
-        <div class="swiper-slide cream-card"><p class="motif-k">The couple</p><p class="motif-t">Norman and Charity</p></div>
-        <div class="swiper-slide silver-card"><p class="motif-k">The day</p><p class="motif-xxv">22</p><p class="motif-t">December 2026</p></div>
-        <div class="swiper-slide"><p class="motif-k">The hour</p><p class="motif-t">10:00 AM</p></div>
-        <div class="swiper-slide cream-card"><p class="motif-k">The place</p><p class="motif-t">Ebenezer Gardens</p></div>
+        <div class="swiper-slide"><img src="photos/nc-hands.jpg" alt="Norman and Charity holding hands" loading="lazy" decoding="async"><span class="photo-cap">Together</span></div>
+        <div class="swiper-slide"><img src="photos/nc-seated.jpg" alt="Norman and Charity" loading="lazy" decoding="async"><span class="photo-cap">Silver years</span></div>
+        <div class="swiper-slide"><img src="photos/nc-glance.jpg" alt="Norman and Charity" loading="lazy" decoding="async"><span class="photo-cap">Still choosing</span></div>
+        <div class="swiper-slide"><img src="photos/nc-smile.jpg" alt="Norman and Charity smiling" loading="lazy" decoding="async"><span class="photo-cap">Joy</span></div>
+        <div class="swiper-slide"><img src="photos/nc-standing.jpg" alt="Norman and Charity standing" loading="lazy" decoding="async"><span class="photo-cap">Side by side</span></div>
+        <div class="swiper-slide"><img src="photos/nc-portrait.jpg" alt="Norman and Charity portrait" loading="lazy" decoding="async"><span class="photo-cap">XXV</span></div>
+        <div class="swiper-slide"><img src="photos/nc-embrace.jpg" alt="Norman and Charity embrace" loading="lazy" decoding="async"><span class="photo-cap">Forever</span></div>
       </div>
     </div>
     <button class="cf-nav next" id="cfNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg></button>
-    <p class="cf-count"><span id="cfIndex">1</span> / <span id="cfTotal">5</span></p>
+    <p class="cf-count"><span id="cfIndex">1</span> / <span id="cfTotal">7</span></p>
   </div>
 </section>
 
@@ -972,9 +995,9 @@
     document.getElementById('cfTotal').textContent = String(total);
     const swiper = new Swiper(el, {
       effect:'coverflow', grabCursor:true, centeredSlides:true, slidesPerView:'auto', loop: total >= 6, speed:650,
-      coverflowEffect:{ rotate:36, stretch:-8, depth:160, modifier:1, slideShadows:true },
+      coverflowEffect:{ rotate:28, stretch:-6, depth:140, modifier:1, slideShadows:false },
       breakpoints:{
-        720:{ coverflowEffect:{ rotate:46, stretch:-16, depth:210, modifier:1.1, slideShadows:true } }
+        720:{ coverflowEffect:{ rotate:36, stretch:-12, depth:180, modifier:1, slideShadows:false } }
       },
       on:{ init(s){ indexEl.textContent = String((s.realIndex||0)+1); }, slideChange(s){ indexEl.textContent = String((s.realIndex||0)+1); } }
     });
