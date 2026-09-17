@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Norman and Charity Muchapondwa — 22 December 2026</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c5d0b8'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Georgia' font-size='13' fill='%235c7348'%3EXXV%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="photos/web/nc-embrace.jpg">
+<link rel="preload" as="image" href="photos/web/nc-hands.jpg">
+<link rel="preload" as="image" href="photos/web/nc-seated.jpg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Outfit:wght@300;400;500&display=swap');
@@ -871,7 +874,7 @@
 
 <section class="couple" id="couple">
   <div class="couple-art">
-    <img src="photos/nc-embrace.jpg" alt="Norman and Charity Muchapondwa" width="900" height="1200" loading="eager" decoding="async">
+    <img src="photos/web/nc-embrace.jpg" alt="Norman and Charity Muchapondwa" width="900" height="1200" loading="eager" decoding="async" fetchpriority="high">
     <span class="art-veil" aria-hidden="true"></span>
     <div class="art-badge" aria-hidden="true">
       <p class="xxv">XXV</p>
@@ -895,13 +898,13 @@
     <button class="cf-nav prev" id="cfPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg></button>
     <div class="swiper photo-swiper" id="photoSwiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="photos/nc-hands.jpg" alt="Norman and Charity holding hands" loading="lazy" decoding="async"><span class="photo-cap">Together</span></div>
-        <div class="swiper-slide"><img src="photos/nc-seated.jpg" alt="Norman and Charity" loading="lazy" decoding="async"><span class="photo-cap">Silver years</span></div>
-        <div class="swiper-slide"><img src="photos/nc-glance.jpg" alt="Norman and Charity" loading="lazy" decoding="async"><span class="photo-cap">Still choosing</span></div>
-        <div class="swiper-slide"><img src="photos/nc-smile.jpg" alt="Norman and Charity smiling" loading="lazy" decoding="async"><span class="photo-cap">Joy</span></div>
-        <div class="swiper-slide"><img src="photos/nc-standing.jpg" alt="Norman and Charity standing" loading="lazy" decoding="async"><span class="photo-cap">Side by side</span></div>
-        <div class="swiper-slide"><img src="photos/nc-portrait.jpg" alt="Norman and Charity portrait" loading="lazy" decoding="async"><span class="photo-cap">XXV</span></div>
-        <div class="swiper-slide"><img src="photos/nc-embrace.jpg" alt="Norman and Charity embrace" loading="lazy" decoding="async"><span class="photo-cap">Forever</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-hands.jpg" alt="Norman and Charity holding hands" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">Together</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-seated.jpg" alt="Norman and Charity" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">Silver years</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-glance.jpg" alt="Norman and Charity" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">Still choosing</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-smile.jpg" alt="Norman and Charity smiling" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">Joy</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-standing.jpg" alt="Norman and Charity standing" width="600" height="800" loading="eager" decoding="async"><span class="photo-cap">Side by side</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-portrait.jpg" alt="Norman and Charity portrait" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">XXV</span></div>
+        <div class="swiper-slide"><img src="photos/web/nc-embrace.jpg" alt="Norman and Charity embrace" width="600" height="750" loading="eager" decoding="async"><span class="photo-cap">Forever</span></div>
       </div>
     </div>
     <button class="cf-nav next" id="cfNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg></button>
@@ -1034,6 +1037,22 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function(){
+  const PHOTO_PRELOAD = [
+    'photos/web/nc-embrace.jpg',
+    'photos/web/nc-hands.jpg',
+    'photos/web/nc-seated.jpg',
+    'photos/web/nc-glance.jpg',
+    'photos/web/nc-smile.jpg',
+    'photos/web/nc-standing.jpg',
+    'photos/web/nc-portrait.jpg'
+  ];
+  PHOTO_PRELOAD.forEach(function(src, i){
+    const img = new Image();
+    if(i < 3 && 'fetchPriority' in img) img.fetchPriority = 'high';
+    img.decoding = 'async';
+    img.src = src;
+  });
+
   const gate = document.getElementById('gate');
   const seal = document.getElementById('seal');
   const gateVideo = document.getElementById('gateVideo');
