@@ -8,6 +8,14 @@
 <link rel="preload" as="image" href="photos/web/nc-embrace.jpg">
 <link rel="preload" as="image" href="photos/web/nc-hands.jpg">
 <link rel="preload" as="image" href="photos/web/nc-seated.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-w-olive.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-w-silver.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-w-sage.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-w-jumpsuit.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-m-silver.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-m-olive.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-m-mix.jpg">
+<link rel="preload" as="image" href="photos/mood/mood-m-waistcoat.jpg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Outfit:wght@300;400;500&display=swap');
@@ -695,6 +703,10 @@
   .heart-day b{ position:relative; z-index:1; color:var(--silver-hi); font-size:clamp(8px, 2.4vw, 10px); font-weight:600; }
   .add-cal{ display:inline-block; margin-top:18px; color:var(--olive-mid); text-decoration:underline; text-underline-offset:4px; font-family:var(--font-serif); transition:color .2s ease; }
   .add-cal:hover{ color:var(--olive-deep); }
+  .reply-by{
+    margin-top:14px; font-family:var(--font-serif); color:var(--olive);
+    font-size:clamp(14px, 3.6vw, 16px); letter-spacing:.02em;
+  }
 
   .venue-kicker{
     font-family:var(--font-serif); letter-spacing:.28em; text-transform:uppercase;
@@ -1001,10 +1013,10 @@
         <p class="board-title" data-en="Ladies" data-sn="Madzimai">Ladies</p>
         <span class="tape t1" aria-hidden="true"></span>
         <span class="tape t2" aria-hidden="true"></span>
-        <figure class="pin h1"><img src="photos/mood/mood-w-olive.jpg" alt="Olive gown for a garden anniversary" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="olive gown" data-sn="gawn yeolive">olive gown</figcaption></figure>
-        <figure class="pin h2"><img src="photos/mood/mood-w-silver.jpg" alt="Silver midi dress for the morning celebration" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="silver midi" data-sn="midi yesirivha">silver midi</figcaption></figure>
-        <figure class="pin h3"><img src="photos/mood/mood-w-sage.jpg" alt="Sage tea-length dress with silver jewellery" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="sage dress" data-sn="dhirezi yesage">sage dress</figcaption></figure>
-        <figure class="pin h4"><img src="photos/mood/mood-w-jumpsuit.jpg" alt="Tailored olive jumpsuit for the garden morning" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="tailored olive" data-sn="olive yakagadzirwa">tailored olive</figcaption></figure>
+        <figure class="pin h1"><img src="photos/mood/mood-w-olive.jpg" alt="Olive gown for a garden anniversary" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="olive gown" data-sn="gawn yeolive">olive gown</figcaption></figure>
+        <figure class="pin h2"><img src="photos/mood/mood-w-silver.jpg" alt="Silver midi dress for the morning celebration" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="silver midi" data-sn="midi yesirivha">silver midi</figcaption></figure>
+        <figure class="pin h3"><img src="photos/mood/mood-w-sage.jpg" alt="Sage tea-length dress with silver jewellery" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="sage dress" data-sn="dhirezi yesage">sage dress</figcaption></figure>
+        <figure class="pin h4"><img src="photos/mood/mood-w-jumpsuit.jpg" alt="Tailored olive jumpsuit for the garden morning" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="tailored olive" data-sn="olive yakagadzirwa">tailored olive</figcaption></figure>
         <span class="chip c1" aria-hidden="true"></span>
         <span class="chip c2" aria-hidden="true"></span>
         <span class="chip c4" aria-hidden="true"></span>
@@ -1014,10 +1026,10 @@
         <p class="board-title" data-en="Gentlemen" data-sn="Varume">Gentlemen</p>
         <span class="tape t1" aria-hidden="true"></span>
         <span class="tape t2" aria-hidden="true"></span>
-        <figure class="pin h1"><img src="photos/mood/mood-m-silver.jpg" alt="Silver suit with an olive tie for the anniversary" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="silver suit" data-sn="sutu yesirivha">silver suit</figcaption></figure>
-        <figure class="pin h2"><img src="photos/mood/mood-m-waistcoat.jpg" alt="Olive suit with a silver waistcoat" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="olive suit" data-sn="sutu yeolive">olive suit</figcaption></figure>
-        <figure class="pin h3"><img src="photos/mood/mood-m-olive.jpg" alt="Olive linen suit for the garden morning" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="garden linen" data-sn="linen yegarden">garden linen</figcaption></figure>
-        <figure class="pin h4"><img src="photos/mood/mood-m-mix.jpg" alt="Silver jacket with an olive shirt" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="jacket &amp; olive" data-sn="jacket neolive">jacket &amp; olive</figcaption></figure>
+        <figure class="pin h1"><img src="photos/mood/mood-m-silver.jpg" alt="Silver suit with an olive tie for the anniversary" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="silver suit" data-sn="sutu yesirivha">silver suit</figcaption></figure>
+        <figure class="pin h2"><img src="photos/mood/mood-m-waistcoat.jpg" alt="Olive suit with a silver waistcoat" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="olive suit" data-sn="sutu yeolive">olive suit</figcaption></figure>
+        <figure class="pin h3"><img src="photos/mood/mood-m-olive.jpg" alt="Olive linen suit for the garden morning" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="garden linen" data-sn="linen yegarden">garden linen</figcaption></figure>
+        <figure class="pin h4"><img src="photos/mood/mood-m-mix.jpg" alt="Silver jacket with an olive shirt" width="432" height="576" loading="eager" decoding="async"><figcaption data-en="jacket &amp; olive" data-sn="jacket neolive">jacket &amp; olive</figcaption></figure>
         <span class="chip c1" aria-hidden="true"></span>
         <span class="chip c3" aria-hidden="true"></span>
         <span class="chip c4" aria-hidden="true"></span>
@@ -1074,6 +1086,7 @@
         data-en="Add to Calendar" data-sn="Wedzera ku Calendar">Add to Calendar</a>
       <br>
       <a class="pill" href="#rsvp" data-en="Confirm attendance" data-sn="Simbisa kuvapo">Confirm attendance</a>
+      <p class="reply-by" data-en="Kindly reply by 22 November 2026" data-sn="Tapota pindurai musi we22 Mbudzi 2026">Kindly reply by 22 November 2026</p>
     </div>
   </div>
 </section>
@@ -1095,6 +1108,7 @@
   <div class="inner reveal">
     <p class="kicker">RSVP</p>
     <h2 class="display" data-en="Be our guest" data-sn="Iva muenzi wedu">Be our guest</h2>
+    <p class="lede" data-en="Kindly reply by Sunday 22 November 2026." data-sn="Tapota pindurai musi weSvondo 22 Mbudzi 2026.">Kindly reply by Sunday 22 November 2026.</p>
     <div class="clip-wrap">
       <span class="gb-env" aria-hidden="true"><span class="gb-flap"></span><span class="gb-body"></span></span>
       <span class="paperclip" aria-hidden="true"></span>
@@ -1137,7 +1151,15 @@
     'photos/web/nc-glance.jpg',
     'photos/web/nc-smile.jpg',
     'photos/web/nc-standing.jpg',
-    'photos/web/nc-portrait.jpg'
+    'photos/web/nc-portrait.jpg',
+    'photos/mood/mood-w-olive.jpg',
+    'photos/mood/mood-w-silver.jpg',
+    'photos/mood/mood-w-sage.jpg',
+    'photos/mood/mood-w-jumpsuit.jpg',
+    'photos/mood/mood-m-silver.jpg',
+    'photos/mood/mood-m-olive.jpg',
+    'photos/mood/mood-m-mix.jpg',
+    'photos/mood/mood-m-waistcoat.jpg'
   ];
   PHOTO_PRELOAD.forEach(function(src, i){
     const img = new Image();
