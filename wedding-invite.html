@@ -322,14 +322,30 @@
     margin:2px 0 0; font-size:clamp(9px, 2.6vw, 11px); letter-spacing:.2em; text-transform:uppercase; color:rgba(220,228,212,.92);
     text-shadow:0 2px 12px rgba(0,0,0,.5);
   }
+  .guest-ask{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    width:min(280px, 78vw); margin:6px 0 0;
+  }
+  .guest-ask span{
+    font-size:clamp(9px, 2.4vw, 10px); letter-spacing:.22em; text-transform:uppercase;
+    color:rgba(220,228,212,.8);
+  }
+  .guest-ask input{
+    width:100%; text-align:center; background:transparent; color:var(--silver-hi);
+    border:0; border-bottom:1px solid rgba(220,228,212,.45);
+    font-family:var(--font-serif); font-size:16px; padding:6px 8px 7px;
+    letter-spacing:.04em;
+  }
+  .guest-ask input::placeholder{ color:rgba(220,228,212,.45); font-style:italic; }
+  .guest-ask input:focus{ outline:none; border-bottom-color:rgba(244,241,232,.9); }
   .hint{
     margin:8px 0 0; font-size:clamp(9px, 2.5vw, 10px); letter-spacing:.22em; text-transform:uppercase;
     color:rgba(220,228,212,.92); opacity:0;
   }
   .hint.show{ opacity:1; animation:hintGlow 2.2s ease-in-out infinite; }
   @keyframes hintGlow{ 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
-  .gate.is-open .guest-hello, .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .hint{
-    opacity:0; transition:opacity .6s ease;
+  .gate.is-open .guest-hello, .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .guest-ask, .gate.is-open .hint{
+    opacity:0; transition:opacity .6s ease; pointer-events:none;
   }
 
   .site{ overflow-x:hidden; }
@@ -501,6 +517,62 @@
     display:flex; flex-direction:column; align-items:center; gap:8px;
     font-family:var(--font-serif); font-size:12px; letter-spacing:.08em; color:var(--muted);
   }
+  .boards{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px; text-align:left;
+  }
+  .board{
+    position:relative; min-height:560px; overflow:hidden;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 42%),
+      repeating-linear-gradient(0deg, rgba(92,115,72,.04) 0 1px, transparent 1px 7px),
+      linear-gradient(165deg, #f3ecde, #e6dcc8);
+    border:1px solid rgba(92,115,72,.28);
+    box-shadow:inset 0 0 0 8px rgba(255,252,246,.42), 0 16px 32px rgba(63,76,52,.12);
+  }
+  .board-title{
+    position:absolute; top:10px; left:0; right:0; z-index:1; text-align:center;
+    font-family:var(--font-script); font-size:1.7rem; color:var(--olive-deep); font-weight:400;
+  }
+  .pin{
+    position:absolute; margin:0; background:#fff; padding:7px 7px 26px;
+    box-shadow:0 12px 18px rgba(44,51,40,.2);
+  }
+  .pin::before{
+    content:''; position:absolute; left:50%; top:-8px; transform:translateX(-50%);
+    width:13px; height:13px; border-radius:50%; z-index:2;
+    background:radial-gradient(circle at 35% 30%, #fff, #d7c4a2 40%, #8d734c);
+    box-shadow:0 2px 3px rgba(0,0,0,.28);
+  }
+  .pin img{ width:100%; height:calc(100% - 18px); object-fit:cover; object-position:center 12%; display:block; }
+  .pin figcaption{
+    position:absolute; left:4px; right:4px; bottom:4px; text-align:center;
+    font-family:var(--font-script); font-size:1rem; color:var(--olive-deep); line-height:1;
+  }
+  .pin.h1{ top:11%; left:5%; width:50%; height:46%; transform:rotate(-6deg); z-index:2; }
+  .pin.h2{ top:8%; right:4%; width:42%; height:40%; transform:rotate(7deg); z-index:3; }
+  .pin.h3{ bottom:7%; left:7%; width:44%; height:42%; transform:rotate(4deg); z-index:4; }
+  .pin.h4{ bottom:5%; right:5%; width:46%; height:44%; transform:rotate(-4deg); z-index:5; }
+  .chip{
+    position:absolute; z-index:6; width:34px; height:46px;
+    border:3px solid #fff; box-shadow:0 6px 12px rgba(44,51,40,.18);
+  }
+  .chip.c1{ top:46%; left:42%; transform:rotate(-12deg); background:#2a3426; }
+  .chip.c2{ top:50%; left:52%; transform:rotate(8deg); background:#556b45; }
+  .chip.c3{ top:44%; right:18%; transform:rotate(14deg); background:#8a9a78; width:28px; height:40px; }
+  .chip.c4{ bottom:22%; left:46%; transform:rotate(-6deg); background:#c5ced6; }
+  .tape{
+    position:absolute; z-index:7; height:16px; width:72px; opacity:.72;
+    background:linear-gradient(180deg, rgba(197,208,184,.55), rgba(143,160,122,.35));
+    box-shadow:0 1px 0 rgba(255,255,255,.4);
+  }
+  .tape.t1{ top:18%; left:28%; transform:rotate(-8deg); }
+  .tape.t2{ bottom:18%; right:22%; transform:rotate(10deg); }
+  .scribble{
+    position:absolute; z-index:8; font-family:var(--font-script);
+    color:var(--olive); font-size:1.15rem; transform:rotate(-4deg);
+  }
+  .scribble.s1{ top:54%; left:8%; }
+  .scribble.s2{ bottom:2%; right:8%; transform:rotate(3deg); }
 
   .sched{
     position:relative; overflow:hidden;
@@ -751,6 +823,8 @@
     .hero-content{ margin-bottom:calc(var(--safe-bottom) + 108px); }
     .surname{ letter-spacing:.2em; }
     .hero-meta{ letter-spacing:.1em; font-size:11px; }
+    .boards{ grid-template-columns:1fr; }
+    .board{ min-height:500px; }
   }
   @media (max-width:380px){
     .invite-card{ width:min(90vw, calc(36svh * 1.58)); }
@@ -847,6 +921,11 @@
     </button>
     <p class="save-names">Norman <span class="and">and</span> Charity</p>
     <p class="save-date">22 December 2026 · 9:00 AM</p>
+    <label class="guest-ask">
+      <span data-en="Your name" data-sn="Zita renyu">Your name</span>
+      <input id="guestNameInput" type="text" maxlength="40" autocomplete="name" enterkeyhint="done"
+        placeholder="So we may address you" data-ph-en="So we may address you" data-ph-sn="Kuti tikukoke nemazita">
+    </label>
     <p class="hint" id="openAsk" data-en="Tap the envelope to open" data-sn="Dzvanya envhoropu kuvhura">Tap the envelope to open</p>
   </div>
 </div>
@@ -914,14 +993,36 @@
 
 <section class="section paper" id="dress">
   <div class="inner reveal">
-    <p class="kicker">Dress code</p>
+    <p class="kicker" data-en="What to wear" data-sn="Zvekupfeka">What to wear</p>
     <h2 class="display" data-en="Silver and olive" data-sn="Sirivha neolive">Silver and olive</h2>
-    <p class="lede" data-en="Party attire in the anniversary colours." data-sn="Pfekai mavara eanniversary.">Party attire in the anniversary colours.</p>
-    <div class="swatches">
-      <span class="swatch" style="background:#2a3426"></span>
-      <span class="swatch" style="background:#556b45"></span>
-      <span class="swatch" style="background:#8a9a78"></span>
-      <span class="swatch" style="background:#c5ced6"></span>
+    <p class="lede" data-en="A garden morning for a silver anniversary. Choose elegant attire in silver, sage, or olive — joyful, refined, and ready for 9:00 at Ebenezer Gardens." data-sn="Mangwanani emugarden yeanniversary yesirivha. Sarudzai zvipfeko zvesirivha, sage, kana olive — zvakajeka, zvine mufaro, kugara kwa9:00 paEbenezer Gardens.">A garden morning for a silver anniversary. Choose elegant attire in silver, sage, or olive — joyful, refined, and ready for 9:00 at Ebenezer Gardens.</p>
+    <div class="boards">
+      <div class="board">
+        <p class="board-title" data-en="Ladies" data-sn="Madzimai">Ladies</p>
+        <span class="tape t1" aria-hidden="true"></span>
+        <span class="tape t2" aria-hidden="true"></span>
+        <figure class="pin h1"><img src="photos/mood/mood-w-olive.jpg" alt="Olive gown for a garden anniversary" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="olive gown" data-sn="gawn yeolive">olive gown</figcaption></figure>
+        <figure class="pin h2"><img src="photos/mood/mood-w-silver.jpg" alt="Silver midi dress for the morning celebration" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="silver midi" data-sn="midi yesirivha">silver midi</figcaption></figure>
+        <figure class="pin h3"><img src="photos/mood/mood-w-sage.jpg" alt="Sage tea-length dress with silver jewellery" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="sage dress" data-sn="dhirezi yesage">sage dress</figcaption></figure>
+        <figure class="pin h4"><img src="photos/mood/mood-w-jumpsuit.jpg" alt="Tailored olive jumpsuit for the garden morning" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="tailored olive" data-sn="olive yakagadzirwa">tailored olive</figcaption></figure>
+        <span class="chip c1" aria-hidden="true"></span>
+        <span class="chip c2" aria-hidden="true"></span>
+        <span class="chip c4" aria-hidden="true"></span>
+        <span class="scribble s1" data-en="garden morning" data-sn="mangwanani">garden morning</span>
+      </div>
+      <div class="board">
+        <p class="board-title" data-en="Gentlemen" data-sn="Varume">Gentlemen</p>
+        <span class="tape t1" aria-hidden="true"></span>
+        <span class="tape t2" aria-hidden="true"></span>
+        <figure class="pin h1"><img src="photos/mood/mood-m-silver.jpg" alt="Silver suit with an olive tie for the anniversary" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="silver suit" data-sn="sutu yesirivha">silver suit</figcaption></figure>
+        <figure class="pin h2"><img src="photos/mood/mood-m-waistcoat.jpg" alt="Olive suit with a silver waistcoat" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="olive suit" data-sn="sutu yeolive">olive suit</figcaption></figure>
+        <figure class="pin h3"><img src="photos/mood/mood-m-olive.jpg" alt="Olive linen suit for the garden morning" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="garden linen" data-sn="linen yegarden">garden linen</figcaption></figure>
+        <figure class="pin h4"><img src="photos/mood/mood-m-mix.jpg" alt="Silver jacket with an olive shirt" width="432" height="576" loading="lazy" decoding="async"><figcaption data-en="jacket &amp; olive" data-sn="jacket neolive">jacket &amp; olive</figcaption></figure>
+        <span class="chip c1" aria-hidden="true"></span>
+        <span class="chip c3" aria-hidden="true"></span>
+        <span class="chip c4" aria-hidden="true"></span>
+        <span class="scribble s2" data-en="from 9:00" data-sn="kubva 9:00">from 9:00</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1065,14 +1166,21 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let lang = 'en', audioOn = false, opened = false;
 
-  function guestNameFromUrl(){
-    const q = new URLSearchParams(location.search);
-    const raw = q.get('to') || q.get('guest') || q.get('name') || '';
-    const cleaned = raw.trim().replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').slice(0, 40);
+  function tidyName(raw){
+    const cleaned = String(raw || '').trim().replace(/[<>&"'`]/g, '').replace(/\s+/g, ' ').slice(0, 40);
     if(!cleaned) return '';
     return cleaned.replace(/\b\w/g, c => c.toUpperCase());
   }
-  const guestName = guestNameFromUrl();
+  function guestNameFromUrl(){
+    const q = new URLSearchParams(location.search);
+    return tidyName(q.get('to') || q.get('guest') || q.get('name') || '');
+  }
+  let guestName = guestNameFromUrl();
+  if(!guestName){
+    try{ guestName = tidyName(localStorage.getItem('ncGuestName') || ''); }catch(_){}
+  }
+  const guestNameInput = document.getElementById('guestNameInput');
+  if(guestNameInput && guestName) guestNameInput.value = guestName;
   function setGuestGreeting(){
     const gateEl = document.getElementById('guestHello');
     const heroEl = document.getElementById('heroGuest');
@@ -1093,6 +1201,26 @@
     });
     const nameInput = form && form.querySelector('input[name="name"]');
     if(nameInput && !nameInput.value) nameInput.value = guestName;
+  }
+  function rememberName(raw, save){
+    guestName = tidyName(raw);
+    if(save){
+      try{
+        if(guestName) localStorage.setItem('ncGuestName', guestName);
+        else localStorage.removeItem('ncGuestName');
+      }catch(_){}
+    }
+    setGuestGreeting();
+  }
+  if(guestNameInput){
+    guestNameInput.addEventListener('input', () => rememberName(guestNameInput.value, false));
+    guestNameInput.addEventListener('change', () => {
+      rememberName(guestNameInput.value, true);
+      if(guestName) guestNameInput.value = guestName;
+    });
+    guestNameInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ e.preventDefault(); guestNameInput.blur(); }
+    });
   }
   setGuestGreeting();
 
