@@ -330,29 +330,34 @@
     margin:2px 0 0; font-size:clamp(9px, 2.6vw, 11px); letter-spacing:.2em; text-transform:uppercase; color:rgba(220,228,212,.92);
     text-shadow:0 2px 12px rgba(0,0,0,.5);
   }
-  .guest-ask{
-    display:flex; flex-direction:column; align-items:center; gap:4px;
-    width:min(280px, 78vw); margin:6px 0 0;
+  .name-pop{
+    position:fixed; inset:0; z-index:300; display:grid; place-items:center;
+    padding:24px; background:rgba(22,25,16,.55); backdrop-filter:blur(8px);
   }
-  .guest-ask span{
-    font-size:clamp(9px, 2.4vw, 10px); letter-spacing:.22em; text-transform:uppercase;
-    color:rgba(220,228,212,.8);
+  .name-pop[hidden]{ display:none; }
+  .name-card{
+    width:min(92vw, 360px); text-align:center;
+    background:var(--paper); padding:32px 22px 26px;
+    border:1px solid rgba(163,179,148,.45);
+    box-shadow:0 28px 60px rgba(0,0,0,.35);
   }
-  .guest-ask input{
-    width:100%; text-align:center; background:transparent; color:var(--silver-hi);
-    border:0; border-bottom:1px solid rgba(220,228,212,.45);
-    font-family:var(--font-serif); font-size:16px; padding:6px 8px 7px;
-    letter-spacing:.04em;
+  .name-hi{ font-family:var(--font-script); font-size:2.6rem; color:var(--olive-deep); line-height:1; margin-bottom:4px; }
+  .name-ask{ font-family:var(--font-serif); font-size:1.25rem; color:var(--olive); margin-bottom:18px; }
+  .name-card input{
+    width:100%; text-align:center; font-size:16px; min-height:48px;
+    border:0; border-bottom:1px solid rgba(92,115,72,.35);
+    background:transparent; color:var(--ink); font-family:var(--font-serif);
+    margin-bottom:8px;
   }
-  .guest-ask input::placeholder{ color:rgba(220,228,212,.45); font-style:italic; }
-  .guest-ask input:focus{ outline:none; border-bottom-color:rgba(244,241,232,.9); }
+  .name-card input:focus{ outline:none; border-bottom-color:var(--olive); }
+  .name-card .pill{ width:100%; margin-top:12px; }
   .hint{
     margin:8px 0 0; font-size:clamp(9px, 2.5vw, 10px); letter-spacing:.22em; text-transform:uppercase;
     color:rgba(220,228,212,.92); opacity:0;
   }
   .hint.show{ opacity:1; animation:hintGlow 2.2s ease-in-out infinite; }
   @keyframes hintGlow{ 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
-  .gate.is-open .guest-hello, .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .guest-ask, .gate.is-open .hint{
+  .gate.is-open .guest-hello, .gate.is-open .save-kicker, .gate.is-open .flourish, .gate.is-open .save-names, .gate.is-open .save-date, .gate.is-open .hint{
     opacity:0; transition:opacity .6s ease; pointer-events:none;
   }
 
@@ -864,6 +869,15 @@
 </style>
 </head>
 <body class="is-sealed">
+<div class="name-pop" id="namePop" hidden>
+  <form class="name-card" id="nameForm">
+    <p class="name-hi" data-en="Hi" data-sn="Mhoro">Hi</p>
+    <p class="name-ask" data-en="What's your name?" data-sn="Zita renyu ndiani?">What's your name?</p>
+    <input id="guestNameInput" name="guest" type="text" required maxlength="40" autocomplete="name" enterkeyhint="done"
+      placeholder="Your name" data-ph-en="Your name" data-ph-sn="Zita renyu">
+    <button class="pill" type="submit" data-en="Continue" data-sn="Enderera">Continue</button>
+  </form>
+</div>
 
 <button class="lang-btn" id="langBtn" type="button" aria-label="Switch language">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 3.8 6 3.8 9s-1.3 6.2-3.8 9c-2.5-2.8-3.8-6-3.8-9S9.5 5.8 12 3z"/></svg>
@@ -933,11 +947,6 @@
     </button>
     <p class="save-names">Norman <span class="and">and</span> Charity</p>
     <p class="save-date">22 December 2026 · 9:00 AM</p>
-    <label class="guest-ask">
-      <span data-en="Your name" data-sn="Zita renyu">Your name</span>
-      <input id="guestNameInput" type="text" maxlength="40" autocomplete="name" enterkeyhint="done"
-        placeholder="So we may address you" data-ph-en="So we may address you" data-ph-sn="Kuti tikukoke nemazita">
-    </label>
     <p class="hint" id="openAsk" data-en="Tap the envelope to open" data-sn="Dzvanya envhoropu kuvhura">Tap the envelope to open</p>
   </div>
 </div>
@@ -1202,7 +1211,8 @@
     try{ guestName = tidyName(localStorage.getItem('ncGuestName') || ''); }catch(_){}
   }
   const guestNameInput = document.getElementById('guestNameInput');
-  if(guestNameInput && guestName) guestNameInput.value = guestName;
+  const namePop = document.getElementById('namePop');
+  const nameForm = document.getElementById('nameForm');
   function setGuestGreeting(){
     const gateEl = document.getElementById('guestHello');
     const heroEl = document.getElementById('heroGuest');
@@ -1224,24 +1234,23 @@
     const nameInput = form && form.querySelector('input[name="name"]');
     if(nameInput && !nameInput.value) nameInput.value = guestName;
   }
-  function rememberName(raw, save){
-    guestName = tidyName(raw);
-    if(save){
-      try{
-        if(guestName) localStorage.setItem('ncGuestName', guestName);
-        else localStorage.removeItem('ncGuestName');
-      }catch(_){}
-    }
-    setGuestGreeting();
+  function closeNamePop(){
+    if(!namePop) return;
+    namePop.hidden = true;
   }
-  if(guestNameInput){
-    guestNameInput.addEventListener('input', () => rememberName(guestNameInput.value, false));
-    guestNameInput.addEventListener('change', () => {
-      rememberName(guestNameInput.value, true);
-      if(guestName) guestNameInput.value = guestName;
-    });
-    guestNameInput.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter'){ e.preventDefault(); guestNameInput.blur(); }
+  if(!guestName && namePop){
+    namePop.hidden = false;
+    setTimeout(() => { if(guestNameInput) guestNameInput.focus(); }, 60);
+  }
+  if(nameForm){
+    nameForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const next = tidyName(guestNameInput && guestNameInput.value);
+      if(!next) return;
+      guestName = next;
+      try{ localStorage.setItem('ncGuestName', guestName); }catch(_){}
+      setGuestGreeting();
+      closeNamePop();
     });
   }
   setGuestGreeting();
