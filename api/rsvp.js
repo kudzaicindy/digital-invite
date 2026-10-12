@@ -24,6 +24,13 @@ export default async function handler(req, res) {
       body: params.toString(),
     });
 
+    const text = await upstream.text();
+    let data = {};
+    try { data = JSON.parse(text); } catch { data = {}; }
+
+    if (data.duplicate || /"duplicate"\s*:\s*true/.test(text)) {
+      return res.status(409).json({ ok: false, error: 'duplicate' });
+    }
     if (!upstream.ok) {
       return res.status(502).json({ ok: false, error: 'Sheet write failed' });
     }

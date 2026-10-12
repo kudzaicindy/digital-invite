@@ -342,7 +342,7 @@
     box-shadow:0 28px 60px rgba(0,0,0,.35);
   }
   .name-hi{ font-family:var(--font-script); font-size:2.6rem; color:var(--olive-deep); line-height:1; margin-bottom:4px; }
-  .name-ask{ font-family:var(--font-serif); font-size:1.25rem; color:var(--olive); margin-bottom:18px; }
+  .name-ask{ font-family:var(--font-serif); font-size:1.12rem; color:var(--olive); margin-bottom:18px; line-height:1.45; }
   .name-card input{
     width:100%; text-align:center; font-size:16px; min-height:48px;
     border:0; border-bottom:1px solid rgba(92,115,72,.35);
@@ -773,6 +773,7 @@
   .pill:active{ transform:translateY(1px); }
   .note{ display:none; margin-top:12px; color:var(--olive-mid); font-family:var(--font-serif); }
   .note.show{ display:block; } .note.error{ color:#8a4a3a; }
+  .guest-card button:disabled{ opacity:.45; cursor:not-allowed; }
   .wishes{ max-width:420px; margin:22px auto 0; text-align:left; }
   .wish{
     background:#fff; border:1px solid #e4e6df; border-radius:12px;
@@ -871,11 +872,11 @@
 <body class="is-sealed">
 <div class="name-pop" id="namePop" hidden>
   <form class="name-card" id="nameForm">
-    <p class="name-hi" data-en="Hi" data-sn="Mhoro">Hi</p>
-    <p class="name-ask" data-en="What's your name?" data-sn="Zita renyu ndiani?">What's your name?</p>
+    <p class="name-hi" data-en="Welcome" data-sn="Mauya">Welcome</p>
+    <p class="name-ask" data-en="You received the invitation link. Kindly register your name for RSVP." data-sn="Matambira link yekukoka. Tapota nyorai zita renyu kuti mu RSVP.">You received the invitation link. Kindly register your name for RSVP.</p>
     <input id="guestNameInput" name="guest" type="text" required maxlength="40" autocomplete="name" enterkeyhint="done"
       placeholder="Your name" data-ph-en="Your name" data-ph-sn="Zita renyu">
-    <button class="pill" type="submit" data-en="Continue" data-sn="Enderera">Continue</button>
+    <button class="pill" type="submit" data-en="Register" data-sn="Nyoresa">Register</button>
   </form>
 </div>
 
@@ -1107,7 +1108,7 @@
     <p class="lede">Ebenezer Palm Tree Gardens<br>5VQW+692, Somerby, Harare</p>
     <div class="map-card">
       <iframe title="Ebenezer Gardens" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        src="https://maps.google.com/maps?q=5VQW%2B692%2C%20Somerby&z=16&output=embed"></iframe>
+        data-src="https://maps.google.com/maps?q=5VQW%2B692%2C%20Somerby&z=16&output=embed"></iframe>
     </div>
     <a class="pill" href="https://www.google.com/maps/search/?api=1&query=5VQW%2B692%2C%20Somerby" target="_blank" rel="noopener">Open in Google Maps</a>
   </div>
@@ -1133,7 +1134,7 @@
         </div>
         <div class="field"><textarea name="message" rows="4" placeholder="Enter your wishes*" data-ph-en="Enter your wishes*" data-ph-sn="Nyora mufaro wenyu*"></textarea></div>
         <button class="pill" type="submit" style="width:100%">Send wishes</button>
-        <p class="note" id="formNote" data-en="Thank you — your message was sent." data-sn="Tatenda — shoko ratumirwa.">Thank you — your message was sent.</p>
+        <p class="note" id="formNote">Thank you — your message was sent.</p>
       </form>
     </div>
     <div class="wishes" id="wishes"></div>
@@ -1190,6 +1191,8 @@
   // Paste your deployed Apps Script /exec URL here for local file:// testing.
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWudEbZubv_HwvdEyWvmUioKruDJdhmsLziJd4etZET2nEVHkdZEXGQFgL0NvD7BRP/exec';
   const isHostedWeb = location.protocol === 'http:' || location.protocol === 'https:';
+  const mapFrame = document.querySelector('.map-card iframe');
+  if(mapFrame && isHostedWeb && mapFrame.dataset.src) mapFrame.src = mapFrame.dataset.src;
   const form = document.getElementById('rsvpForm');
   const formNote = document.getElementById('formNote');
   const wishes = document.getElementById('wishes');
@@ -1334,6 +1337,33 @@
       if(val != null) el.setAttribute('placeholder', val);
     });
     setGuestGreeting();
+    if(formNote && formNote.dataset.state) formNote.textContent = noteCopy(formNote.dataset.state);
+  }
+  function noteCopy(state){
+    const copy = {
+      success: { en:'Thank you — your message was sent.', sn:'Tatenda — shoko ratumirwa.' },
+      duplicate: {
+        en:'This email has already been used to RSVP. The send button is turned off.',
+        sn:'Email iyi yakatoshandiswa ku RSVP. Bhatani rekutumira rakadzimwa.'
+      },
+      setup: {
+        en:'RSVP is not connected yet. Add your Google Apps Script URL, or test on digital-invite-tau.vercel.app.',
+        sn:'RSVP haisati yaiswa. Isa Google Apps Script URL, kana edza pa digital-invite-tau.vercel.app.'
+      },
+      local: {
+        en:'Opening the file directly will not send RSVPs. Use digital-invite-tau.vercel.app or paste GOOGLE_SCRIPT_URL in index.html.',
+        sn:'Kuverenga mufile hakubviri. Shandisa digital-invite-tau.vercel.app kana isa GOOGLE_SCRIPT_URL.'
+      },
+      fail: { en:'Could not send just now.', sn:'Hatina kukwanisa kutumira izvozvi.' }
+    };
+    const row = copy[state] || copy.fail;
+    return row[lang] || row.en;
+  }
+  function showNote(state, isError){
+    formNote.dataset.state = state;
+    formNote.textContent = noteCopy(state);
+    formNote.classList.add('show');
+    formNote.classList.toggle('error', !!isError);
   }
   langBtn.addEventListener('click', () => { lang = lang==='en' ? 'sn' : 'en'; applyLang(); });
 
@@ -1400,10 +1430,8 @@
   }
 
   function showRsvpSuccess(formEl, noteEl, name, msg){
-    const successMsg = noteEl.getAttribute('data-'+lang) || 'Thank you — sent.';
     formEl.reset();
-    noteEl.textContent = successMsg;
-    noteEl.classList.add('show');
+    showNote('success');
     if(wishes && name){
       const card = document.createElement('article');
       card.className = 'wish';
@@ -1422,23 +1450,19 @@
     });
     try{
       const res = await fetch(scriptUrl, { method:'POST', body });
-      if(res.ok) return true;
+      const text = await res.text();
+      if(/"duplicate"\s*:\s*true/.test(text)) return 'duplicate';
+      if(res.ok) return 'ok';
     }catch(_){}
     await fetch(scriptUrl, { method:'POST', body, mode:'no-cors' });
-    return true;
+    return 'ok';
   }
 
   async function submitForm(formEl, noteEl){
     const btn = formEl.querySelector('button[type=submit]');
-    const setupMsg = lang==='sn'
-      ? 'RSVP haisati yaiswa. Isa Google Apps Script URL, kana edza pa digital-invite-tau.vercel.app.'
-      : 'RSVP is not connected yet. Add your Google Apps Script URL, or test on digital-invite-tau.vercel.app.';
-    const localMsg = lang==='sn'
-      ? 'Kuverenga mufile hakubviri. Shandisa digital-invite-tau.vercel.app kana isa GOOGLE_SCRIPT_URL.'
-      : 'Opening the file directly will not send RSVPs. Use digital-invite-tau.vercel.app or paste GOOGLE_SCRIPT_URL in index.html.';
-    const failMsg = lang==='sn' ? 'Hatina kukwanisa kutumira izvozvi.' : 'Could not send just now.';
     const data = new FormData(formEl);
     const name = (data.get('name') || '').toString().trim();
+    const email = (data.get('email') || '').toString().trim().toLowerCase();
     const msg = (data.get('message') || '').toString().trim();
     const payload = {
       name: data.get('name'),
@@ -1446,7 +1470,32 @@
       attend: data.get('attend'),
       message: data.get('message'),
     };
-    noteEl.classList.remove('show','error');
+    function rememberedEmails(){
+      const list = [];
+      try{
+        JSON.parse(localStorage.getItem('ncRsvpEmails') || '[]').forEach(value => {
+          const emailKey = String(value || '').trim().toLowerCase();
+          if(emailKey && list.indexOf(emailKey) === -1) list.push(emailKey);
+        });
+      }catch(_){}
+      return list;
+    }
+    function rememberEmail(value){
+      const emailKey = String(value || '').trim().toLowerCase();
+      if(!emailKey) return;
+      const list = rememberedEmails();
+      if(list.indexOf(emailKey) === -1) list.push(emailKey);
+      try{ localStorage.setItem('ncRsvpEmails', JSON.stringify(list)); }catch(_){}
+    }
+    function blockDuplicate(button){
+      showNote('duplicate');
+      if(button) button.disabled = true;
+      formEl.dataset.emailBlocked = '1';
+    }
+    if(email && rememberedEmails().indexOf(email) !== -1){
+      blockDuplicate(btn);
+      return;
+    }
     if(btn) btn.disabled = true;
 
     try{
@@ -1457,28 +1506,63 @@
           body: JSON.stringify(payload),
         });
         const result = await res.json().catch(() => ({}));
+        if(res.status === 409 || result.error === 'duplicate'){
+          rememberEmail(email);
+          blockDuplicate(btn);
+          return;
+        }
         if(res.status === 503) throw new Error('RSVP not configured');
         if(!res.ok) throw new Error(result.error || 'fail');
+        rememberEmail(email);
         showRsvpSuccess(formEl, noteEl, name, msg);
         return;
       }
 
       if(!GOOGLE_SCRIPT_URL){
-        noteEl.textContent = localMsg;
-        noteEl.classList.add('show','error');
+        showNote('local', true);
         return;
       }
 
-      await submitToGoogleScript(GOOGLE_SCRIPT_URL, payload);
+      const sent = await submitToGoogleScript(GOOGLE_SCRIPT_URL, payload);
+      if(sent === 'duplicate'){
+        rememberEmail(email);
+        blockDuplicate(btn);
+        return;
+      }
+      rememberEmail(email);
       showRsvpSuccess(formEl, noteEl, name, msg);
     }catch(err){
-      noteEl.textContent = err.message === 'RSVP not configured' ? setupMsg : failMsg;
-      noteEl.classList.add('show','error');
+      showNote(err.message === 'RSVP not configured' ? 'setup' : 'fail', true);
     }finally{
-      if(btn) btn.disabled = false;
+      if(btn && formEl.dataset.emailBlocked !== '1') btn.disabled = false;
     }
   }
-  form.addEventListener('submit', e => { e.preventDefault(); submitForm(form, formNote); });
+  let rsvpSending = false;
+  const rsvpEmail = form.querySelector('input[name=email]');
+  if(rsvpEmail){
+    rsvpEmail.addEventListener('input', () => {
+      const emailKey = rsvpEmail.value.trim().toLowerCase();
+      let seen = [];
+      try{ seen = JSON.parse(localStorage.getItem('ncRsvpEmails') || '[]'); }catch(_){}
+      const btn = form.querySelector('button[type=submit]');
+      if(emailKey && seen.indexOf(emailKey) !== -1){
+        showNote('duplicate');
+        if(btn) btn.disabled = true;
+        form.dataset.emailBlocked = '1';
+      }else if(form.dataset.emailBlocked === '1'){
+        form.dataset.emailBlocked = '';
+        if(btn) btn.disabled = false;
+        formNote.classList.remove('show','error');
+        delete formNote.dataset.state;
+      }
+    });
+  }
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if(rsvpSending) return;
+    rsvpSending = true;
+    submitForm(form, formNote).finally(() => { rsvpSending = false; });
+  });
 
   const reveals = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window && !reduceMotion){
